@@ -1,5 +1,5 @@
 import Chat from "@/components/Chat";
-import { getSession, isStaff } from "@/lib/auth";
+import { getSession, isStaff, isAdmin } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -9,8 +9,8 @@ export default async function Asisten() {
     <div className="wrap pt-10">
       <div className="kicker">AI Asisten</div>
       <h1 className="mt-1 text-3xl md:text-4xl">Tanya apa saja soal pekerjaan IT</h1>
-      <p className="mt-2 max-w-3xl text-muted">AI membaca isi IT Hub: daftar web, rencana kerja, perubahan kode dari GitHub, dan aktivitas yang dicatat. {isStaff(user) ? "Anda login sebagai pimpinan, jadi AI juga mengetahui daftar akun (tanpa password)." : "Login untuk pertanyaan yang lebih lengkap."}</p>
-      <div className="mt-6"><Chat /></div>
+      <p className="mt-2 max-w-3xl text-muted">AI membaca isi IT Hub: daftar web, rencana kerja, perubahan kode dari GitHub, dan aktivitas yang dicatat. {isAdmin(user) ? "Anda login sebagai superadmin: AI juga bisa menambah, mengubah, dan menghapus rencana, tugas, aktivitas, dan info web lewat perintah biasa. Penghapusan selalu minta konfirmasi." : isStaff(user) ? "Anda login sebagai pimpinan, jadi AI juga mengetahui daftar akun (tanpa password). Mode baca saja." : "Login untuk pertanyaan yang lebih lengkap."}</p>
+      <div className="mt-6"><Chat admin={isAdmin(user)} /></div>
     </div>
   );
 }
