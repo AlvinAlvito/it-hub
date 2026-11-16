@@ -4,7 +4,8 @@ import { getWeb } from "@/lib/data";
 import { getSession, isStaff, vaultOpen } from "@/lib/auth";
 import { nice } from "@/lib/dates";
 import { Badge, STATUS_WEB, Lines } from "@/components/ui";
-import Gallery from "@/components/Gallery";
+import Gallery, { VideoGallery } from "@/components/Gallery";
+import Slider from "@/components/Slider";
 import Accounts from "@/components/Accounts";
 
 export const dynamic = "force-dynamic";
@@ -20,6 +21,9 @@ export default async function WebDetail({ params }) {
     ...commits.map((c) => ({ date: c.committed_at.slice(0, 10), title: c.message.split("\n")[0], kind: "kode", url: c.url })),
   ].sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, 40);
   const last = timeline[0]?.date;
+  const slides = media.filter((m) => m.section === "slider" && m.type === "image");
+  const images = media.filter((m) => m.section === "galeri" && m.type === "image");
+  const videos = media.filter((m) => m.section === "video" || m.type !== "image");
 
   return (
     <>
@@ -38,7 +42,23 @@ export default async function WebDetail({ params }) {
         <p className="mt-4 max-w-3xl text-lg text-fg">{web.summary}</p>
       </div>
 
-      {media.length > 0 && <div className="wrap mt-6"><Gallery media={media} /></div>}
+      {slides.length > 0 && <div className="wrap mt-6"><Slider images={slides} /></div>}
+
+      {images.length > 0 && (
+        <div className="wrap mt-8">
+          <div className="kicker">Galeri</div>
+          <h2 className="mb-4 mt-1 text-xl">Tampilan sistem</h2>
+          <Gallery media={images} />
+        </div>
+      )}
+
+      {videos.length > 0 && (
+        <div className="wrap mt-8">
+          <div className="kicker">Video</div>
+          <h2 className="mb-4 mt-1 text-xl">Video panduan dan demo</h2>
+          <VideoGallery media={videos} />
+        </div>
+      )}
 
       <div className="wrap mt-8 grid gap-6 lg:grid-cols-2">
         <div className="card p-6">

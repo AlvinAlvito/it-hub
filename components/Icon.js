@@ -16,6 +16,18 @@ const PATHS = {
   send: "M22 2 11 13M22 2l-7 20-4-9-9-4z",
   lock: "M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4",
   arrow: "M5 12h14M13 6l6 6-6 6",
+  plus: "M12 5v14M5 12h14",
+  edit: "M4 20h4L19 9l-4-4L4 16zM14 6l4 4",
+  trash: "M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6",
+  upload: "M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3",
+  refresh: "M20 11a8 8 0 0 0-14.9-3.9L4 8M4 4v4h4M4 13a8 8 0 0 0 14.9 3.9L20 16M20 20v-4h-4",
+  image: "M4 5h16v14H4zM4 15l4-4 5 5 3-3 4 4M15 9.5a1.5 1.5 0 1 0 0-.01",
+  video: "M3 6h12v12H3zM15 10l6-3v10l-6-3",
+  slides: "M3 6h18v12H3zM8 21h8M7 12l-2 0M19 12l-2 0",
+  key: "M15 7a4 4 0 1 1-3.5 6L4 20.5V17h3v-2h2l2.5-2.5A4 4 0 0 1 15 7Z",
+  clock: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 7v5l3 2",
+  chevronLeft: "M15 18l-6-6 6-6",
+  chevronRight: "M9 18l6-6-6-6",
 };
 
 export default function Icon({ name, className = "h-5 w-5" }) {

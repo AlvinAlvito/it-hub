@@ -17,6 +17,14 @@ const db = await mysql.createConnection({
 await db.query(fs.readFileSync(path.join(dir, "schema.sql"), "utf8"));
 console.log("Tabel siap.");
 
+// Perubahan kolom bertahap, aman untuk MySQL maupun MariaDB
+const hasColumn = async (t, c) => (await db.query("SELECT COUNT(*) AS n FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name = ? AND column_name = ?", [t, c]))[0][0].n > 0;
+if (!(await hasColumn("web_media", "section"))) {
+  await db.query("ALTER TABLE web_media ADD COLUMN section VARCHAR(10) NOT NULL DEFAULT 'galeri' AFTER type");
+  await db.query("UPDATE web_media SET section = 'video' WHERE type IN ('video','youtube')");
+  console.log("Kolom web_media.section ditambahkan.");
+}
+
 const count = async (t) => (await db.query(`SELECT COUNT(*) AS n FROM ${t}`))[0][0].n;
 const randPass = () => crypto.randomBytes(9).toString("base64").replace(/[+/=]/g, "x");
 const randPin = () => String(crypto.randomInt(100000, 999999));

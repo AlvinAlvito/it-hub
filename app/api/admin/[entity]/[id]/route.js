@@ -15,6 +15,10 @@ export async function PUT(req, { params }) {
   const body = await req.json().catch(() => ({}));
   if (params.entity === "web_accounts" && body.password === "") delete body.password; // kosong = password tidak diubah
   const data = prepare(params.entity, pick(params.entity, body));
+  if (params.entity === "web_media" && data.section) {
+    const m = await one("SELECT type FROM web_media WHERE id = ?", [Number(params.id)]);
+    if (m && (m.type === "image") === (data.section === "video")) return json({ error: m.type === "image" ? "Gambar hanya bisa di slider atau galeri gambar" : "Video hanya bisa di galeri video" }, 400);
+  }
   const keys = Object.keys(data);
   if (!keys.length) return json({ ok: true });
   try {

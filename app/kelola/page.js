@@ -1,9 +1,10 @@
 import { q, getSetting } from "@/lib/db";
 import { getSession } from "@/lib/auth";
 import { todayWIB } from "@/lib/dates";
-import { ACT_CATEGORIES } from "@/lib/forms";
-import { EntityForm, SyncButton } from "@/components/admin";
-import CredentialForm from "@/components/CredentialForm";
+import { activityFields } from "@/lib/forms";
+import { FormModal, SyncButton } from "@/components/admin";
+import { CredentialModal } from "@/components/CredentialForm";
+import { Stat } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -19,33 +20,38 @@ export default async function KelolaHome() {
   const last = result ? JSON.parse(result) : null;
   return (
     <div className="space-y-6">
-      <div className="card p-6">
-        <h2 className="text-xl">Sinkron GitHub</h2>
-        <p className="mt-1 text-sm text-muted">
-          {last ? `Terakhir ${last.at.replace("T", " ").slice(0, 16)} UTC: ${last.added} commit baru, ${last.repos} repo${last.token ? "" : " (tanpa token, hanya repo publik)"}.` : "Belum pernah disinkronkan."} Total {counts[0].commits} commit, {counts[0].accounts} akun, {counts[0].media} media tersimpan.
-        </p>
-        <div className="mt-3"><SyncButton /></div>
+      <div className="grid gap-4 sm:grid-cols-3">
+        <Stat value={counts[0].commits} label="commit GitHub tersimpan" />
+        <Stat value={counts[0].media} label="gambar dan video" tone="gold" />
+        <Stat value={counts[0].accounts} label="akun web tercatat" tone="teal" />
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <div className="card p-6">
+          <h2 className="text-lg">Sinkron GitHub</h2>
+          <p className="mb-4 mt-1 text-sm text-muted">
+            {last ? `Terakhir ${last.at.replace("T", " ").slice(0, 16)} UTC: ${last.added} commit baru dari ${last.repos} repo${last.token ? "" : " (tanpa token, hanya repo publik)"}.` : "Belum pernah disinkronkan."} Otomatis setiap 30 menit.
+          </p>
+          <SyncButton />
+        </div>
+        <div className="card p-6">
+          <h2 className="text-lg">Catat aktivitas cepat</h2>
+          <p className="mb-4 mt-1 text-sm text-muted">Pekerjaan di luar GitHub: koordinasi, rapat, strategi, support, standby.</p>
+          <FormModal label="Catat aktivitas" title="Catat aktivitas" entity="activities" fields={activityFields(projects, todayWIB())} />
+        </div>
       </div>
 
       <div className="card p-6">
-        <h2 className="text-xl">Catat aktivitas cepat</h2>
-        <p className="mb-3 text-sm text-muted">Untuk pekerjaan yang tidak ada di GitHub: koordinasi, rapat, strategi, support, standby.</p>
-        <EntityForm entity="activities" reset submitLabel="Catat" fields={[
-          { name: "date", label: "Tanggal", type: "date", required: true, default: todayWIB() },
-          { name: "category", label: "Jenis", type: "select", options: ACT_CATEGORIES, default: "koordinasi" },
-          { name: "title", label: "Apa yang dikerjakan", required: true, wide: true },
-          { name: "duration_min", label: "Durasi (menit)", type: "number" },
-          { name: "project_id", label: "Proyek terkait", type: "select", options: [["", "Tidak ada"], ...projects.map((p) => [String(p.id), p.name])] },
-          { name: "detail", label: "Detail", type: "textarea" },
-        ]} />
-      </div>
-
-      <div className="card p-6">
-        <h2 className="text-xl">Pengguna</h2>
-        <div className="mt-3 grid gap-4 md:grid-cols-2">
+        <h2 className="text-lg">Pengguna</h2>
+        <div className="mt-4 divide-y divide-line">
           {users.map((u) => (
-            <div key={u.id}>
-              <CredentialForm userId={u.id} self={u.id === me.id} label={`${u.name} · ${u.username} · ${u.role}${u.last_login ? ` · login terakhir ${u.last_login.slice(0, 16)}` : ""}`} />
+            <div key={u.id} className="flex flex-wrap items-center gap-3 py-3">
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-gold text-xs font-bold text-white">{u.name.split(" ").map((s) => s[0]).join("").slice(0, 2).toUpperCase()}</span>
+              <div className="min-w-0 flex-1">
+                <div className="font-semibold text-heading">{u.name} <span className="ml-1 text-xs font-normal text-muted">@{u.username}</span></div>
+                <div className="text-xs capitalize text-muted">{u.role}{u.last_login ? ` · login terakhir ${u.last_login.slice(0, 16)}` : " · belum pernah login"}</div>
+              </div>
+              <CredentialModal userId={u.id} self={u.id === me.id} name={u.name} />
             </div>
           ))}
         </div>
