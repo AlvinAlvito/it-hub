@@ -11,7 +11,7 @@ export default function Gallery({ media }) {
         {media.map((m) => (
           <figure key={m.id} className="card overflow-hidden">
             {m.type === "image" && (
-              <button onClick={() => setOpen(m)} className="block aspect-[16/10] w-full bg-navy-soft">
+              <button onClick={() => setOpen(m)} className="block aspect-[16/10] w-full bg-subtle">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={src(m)} alt={m.caption || "screenshot"} className="h-full w-full object-cover" loading="lazy" />
               </button>

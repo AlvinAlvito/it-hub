@@ -19,7 +19,7 @@ export default function Markdown({ text }) {
   return (
     <div className="prose-it text-sm leading-relaxed">
       {blocks.map((b, bi) => {
-        if (b.t === "chart") return <div key={bi} className="my-3 rounded-lg border border-hair bg-white p-3"><Chart {...b.v} /></div>;
+        if (b.t === "chart") return <div key={bi} className="my-3 rounded-lg border border-line bg-card p-3"><Chart {...b.v} /></div>;
         const out = [];
         let list = [];
         let rows = [];
@@ -31,8 +31,8 @@ export default function Markdown({ text }) {
           out.push(
             <div key={"t" + k} className="my-3 overflow-x-auto">
               <table className="w-full border-collapse text-left text-xs">
-                <thead><tr>{head.map((c, ci) => <th key={ci} className="border-b border-hair bg-navy-soft px-2 py-1.5 font-semibold text-navy">{cell(c, ci, "h")}</th>)}</tr></thead>
-                <tbody>{body.map((r, ri) => <tr key={ri}>{r.map((c, ci) => <td key={ci} className="border-b border-hair px-2 py-1.5 align-top">{cell(c, ci, "r" + ri)}</td>)}</tr>)}</tbody>
+                <thead><tr>{head.map((c, ci) => <th key={ci} className="border-b border-line bg-subtle px-2 py-1.5 font-semibold text-heading">{cell(c, ci, "h")}</th>)}</tr></thead>
+                <tbody>{body.map((r, ri) => <tr key={ri}>{r.map((c, ci) => <td key={ci} className="border-b border-line px-2 py-1.5 align-top">{cell(c, ci, "r" + ri)}</td>)}</tr>)}</tbody>
               </table>
             </div>
           );
@@ -51,7 +51,7 @@ export default function Markdown({ text }) {
           if (li) { list.push(<li key={i}>{inline(li[1], bi + "-" + i)}</li>); return; }
           flush(i);
           const h = line.match(/^#{1,4}\s+(.*)/);
-          if (h) out.push(<p key={i} className="mt-3 font-semibold text-navy">{inline(h[1], bi + "-" + i)}</p>);
+          if (h) out.push(<p key={i} className="mt-3 font-semibold text-heading">{inline(h[1], bi + "-" + i)}</p>);
           else if (line.trim()) out.push(<p key={i}>{inline(line, bi + "-" + i)}</p>);
         });
         flush("end");

@@ -58,7 +58,7 @@ export default async function KelolaHome() {
           <table className="w-full text-sm">
             <tbody>
               {logs.map((l) => (
-                <tr key={l.id} className="border-b border-hair">
+                <tr key={l.id} className="border-b border-line">
                   <td className="py-2 pr-4 text-xs text-muted">{l.created_at}</td>
                   <td className="py-2 pr-4 font-semibold">{l.username || "-"}</td>
                   <td className="py-2 pr-4">{l.action.replace(/_/g, " ")}</td>

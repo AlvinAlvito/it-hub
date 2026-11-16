@@ -8,10 +8,10 @@ import { Badge, STATUS_PROJ, STATUS_TASK, Progress, CAT } from "@/components/ui"
 export const dynamic = "force-dynamic";
 
 const BOX = [
-  ["masalah", "Masalah", "#9B3B3B"],
-  ["solusi", "Solusi", "#3E5C7E"],
-  ["tujuan", "Tujuan", "#8C6D31"],
-  ["manfaat", "Manfaat", "#2F6B5E"],
+  ["masalah", "Masalah", "#C2574F"],
+  ["solusi", "Solusi", "#4B76A8"],
+  ["tujuan", "Tujuan", "#B08D57"],
+  ["manfaat", "Manfaat", "#2F8A74"],
 ];
 
 export default async function ProjectDetail({ params }) {
@@ -25,7 +25,7 @@ export default async function ProjectDetail({ params }) {
   return (
     <>
       <div className="wrap pt-8">
-        <Link href="/rencana" className="text-sm font-semibold text-gold-dark">← Rencana kerja</Link>
+        <Link href="/rencana" className="text-sm font-semibold text-accent">← Rencana kerja</Link>
         <div className="mt-3 flex flex-wrap items-center gap-3">
           <h1 className="text-3xl md:text-4xl">{p.name}</h1>
           <Badge map={STATUS_PROJ} value={p.status} />
@@ -42,16 +42,16 @@ export default async function ProjectDetail({ params }) {
         ))}
       </div>
       {p.output && (
-        <div className="wrap mt-4"><div className="card bg-navy-soft p-5 text-sm"><span className="font-bold text-navy">Output: </span>{p.output}</div></div>
+        <div className="wrap mt-4"><div className="card bg-subtle p-5 text-sm"><span className="font-bold text-heading">Output: </span>{p.output}</div></div>
       )}
       <div className="wrap mt-6 grid gap-6 lg:grid-cols-2">
         <div className="card p-6">
           <h2 className="text-xl">Tugas</h2>
-          <div className="mt-3 divide-y divide-hair">
+          <div className="mt-3 divide-y divide-line">
             {tasks.map((t) => (
               <div key={t.id} className="flex items-start justify-between gap-3 py-3">
                 <div>
-                  <div className={`text-sm font-semibold ${t.status === "selesai" ? "text-muted line-through" : "text-ink"}`}>{t.title}</div>
+                  <div className={`text-sm font-semibold ${t.status === "selesai" ? "text-muted line-through" : "text-fg"}`}>{t.title}</div>
                   <div className="text-xs text-muted">{t.start_date ? nice(t.start_date) : "?"} – {t.end_date ? nice(t.end_date) : "?"}</div>
                 </div>
                 <Badge map={STATUS_TASK} value={t.status} />
@@ -62,10 +62,10 @@ export default async function ProjectDetail({ params }) {
         <div className="card p-6">
           <h2 className="text-xl">Jejak pekerjaan</h2>
           <p className="text-xs text-muted">Perubahan kode di repo {repos.join(", ") || "-"} dan aktivitas yang dicatat untuk proyek ini.</p>
-          <div className="mt-3 divide-y divide-hair">
+          <div className="mt-3 divide-y divide-line">
             {[...acts.map((a) => ({ d: a.date, t: a.title, k: a.category })), ...commits.map((c) => ({ d: c.committed_at.slice(0, 10), t: c.message.split("\n")[0], k: "kode" }))]
               .sort((a, b) => (a.d < b.d ? 1 : -1)).slice(0, 30).map((x, i) => (
-                <div key={i} className="flex gap-3 py-2 text-sm"><span className="w-20 shrink-0 text-xs text-muted">{nice(x.d)}</span><span className="w-20 shrink-0 text-xs font-semibold capitalize text-gold-dark">{x.k}</span><span>{x.t}</span></div>
+                <div key={i} className="flex gap-3 py-2 text-sm"><span className="w-20 shrink-0 text-xs text-muted">{nice(x.d)}</span><span className="w-20 shrink-0 text-xs font-semibold capitalize text-accent">{x.k}</span><span>{x.t}</span></div>
               ))}
             {!acts.length && !commits.length && <p className="py-2 text-sm text-muted">Belum ada jejak pekerjaan.</p>}
           </div>

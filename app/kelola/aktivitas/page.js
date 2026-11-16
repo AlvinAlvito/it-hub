@@ -23,12 +23,12 @@ export default async function KelolaAktivitas() {
           { name: "detail", label: "Detail", type: "textarea" },
         ]} />
       </div>
-      <div className="card divide-y divide-hair">
+      <div className="card divide-y divide-line">
         {acts.length ? acts.map((a) => (
           <div key={a.id} className="flex flex-wrap items-start gap-3 p-4 text-sm">
             <span className="w-24 text-xs text-muted">{nice(a.date)}</span>
             <span className="chip bg-teal/10 capitalize text-teal">{a.category}</span>
-            <div className="flex-1"><div className="font-semibold">{a.title}</div>{a.detail && <div className="text-muted">{a.detail}</div>}{a.project_name && <div className="text-xs text-gold-dark">{a.project_name}</div>}</div>
+            <div className="flex-1"><div className="font-semibold">{a.title}</div>{a.detail && <div className="text-muted">{a.detail}</div>}{a.project_name && <div className="text-xs text-accent">{a.project_name}</div>}</div>
             <DeleteButton entity="activities" id={a.id} />
           </div>
         )) : <p className="p-4 text-sm text-muted">Belum ada aktivitas.</p>}

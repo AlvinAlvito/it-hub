@@ -36,12 +36,12 @@ export default function Chat() {
       <div className="flex-1 space-y-4 overflow-y-auto p-5">
         {!msgs.length && (
           <div className="grid gap-3 sm:grid-cols-2">
-            {SUGGEST.map((s) => <button key={s} onClick={() => send(s)} className="rounded-xl border border-hair bg-navy-soft p-4 text-left text-sm text-navy hover:border-gold">{s}</button>)}
+            {SUGGEST.map((s) => <button key={s} onClick={() => send(s)} className="rounded-xl border border-line bg-subtle p-4 text-left text-sm text-heading hover:border-gold">{s}</button>)}
           </div>
         )}
         {msgs.map((m, i) => (
           <div key={i} className={m.role === "user" ? "flex justify-end" : "flex"}>
-            <div className={m.role === "user" ? "max-w-[80%] rounded-2xl rounded-br-sm bg-navy px-4 py-3 text-sm text-white" : "w-full max-w-[90%] rounded-2xl rounded-bl-sm border border-hair bg-white px-4 py-3"}>
+            <div className={m.role === "user" ? "max-w-[80%] rounded-2xl rounded-br-sm bg-brand px-4 py-3 text-sm text-white" : "w-full max-w-[90%] rounded-2xl rounded-bl-sm border border-line bg-card px-4 py-3"}>
               {m.role === "user" ? m.content : <Markdown text={m.content} />}
             </div>
           </div>
@@ -49,7 +49,7 @@ export default function Chat() {
         {busy && <div className="text-sm text-muted">AI sedang membaca data...</div>}
         <div ref={end} />
       </div>
-      <form onSubmit={(e) => { e.preventDefault(); send(); }} className="flex gap-2 border-t border-hair p-3">
+      <form onSubmit={(e) => { e.preventDefault(); send(); }} className="flex gap-2 border-t border-line p-3">
         <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Contoh: hari ini IT mengerjakan apa?" className="input" maxLength={1500} />
         <button disabled={busy || !input.trim()} className="btn-primary">Kirim</button>
       </form>

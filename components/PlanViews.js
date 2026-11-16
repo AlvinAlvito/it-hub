@@ -10,9 +10,9 @@ export default function PlanViews({ projects, today, initial }) {
   const [tab, setTab] = useState(TABS.some((t) => t[0] === initial) ? initial : "timeline");
   return (
     <>
-      <div className="mb-5 inline-flex rounded-xl border border-hair bg-white p-1">
+      <div className="mb-5 inline-flex rounded-xl border border-line bg-card p-1">
         {TABS.map(([k, l]) => (
-          <button key={k} onClick={() => setTab(k)} className={`rounded-lg px-4 py-2 text-sm font-semibold ${tab === k ? "bg-navy text-white" : "text-muted hover:text-navy"}`}>{l}</button>
+          <button key={k} onClick={() => setTab(k)} className={`rounded-lg px-4 py-2 text-sm font-semibold ${tab === k ? "bg-brand text-white" : "text-muted hover:text-heading"}`}>{l}</button>
         ))}
       </div>
       {tab === "timeline" && <Timeline projects={projects} today={today} />}
@@ -38,7 +38,7 @@ function Timeline({ projects, today }) {
   return (
     <div className="card overflow-x-auto p-4">
       <div className="min-w-[860px]">
-        <div className="grid grid-cols-[260px_1fr] border-b border-hair pb-2 text-xs font-semibold text-muted">
+        <div className="grid grid-cols-[260px_1fr] border-b border-line pb-2 text-xs font-semibold text-muted">
           <div>Proyek</div>
           <div className="relative flex">{months.map((m) => <div key={m} className="flex-1 text-center">{BLN[parse(m).getUTCMonth()]} {m.slice(2, 4)}</div>)}</div>
         </div>
@@ -46,12 +46,12 @@ function Timeline({ projects, today }) {
           const color = (CAT[p.category] || CAT.internal)[1];
           const l = pos(p.start_date), r = pos(addDays(p.end_date, 1));
           return (
-            <div key={p.id} className="grid grid-cols-[260px_1fr] items-center border-b border-hair/60 py-2">
-              <Link href={`/rencana/${p.slug}`} className="pr-3 text-sm font-semibold text-ink hover:text-navy">{p.name}</Link>
+            <div key={p.id} className="grid grid-cols-[260px_1fr] items-center border-b border-line/60 py-2">
+              <Link href={`/rencana/${p.slug}`} className="pr-3 text-sm font-semibold text-fg hover:text-heading">{p.name}</Link>
               <div className="relative h-8">
-                {months.map((m, i) => <div key={m} className="absolute top-0 h-full border-l border-hair/70" style={{ left: `${(i / months.length) * 100}%` }} />)}
+                {months.map((m, i) => <div key={m} className="absolute top-0 h-full border-l border-line/70" style={{ left: `${(i / months.length) * 100}%` }} />)}
                 <Link href={`/rencana/${p.slug}`} title={`${nice(p.start_date)} – ${nice(p.end_date)}`} className="absolute top-1 flex h-6 items-center overflow-hidden rounded-full px-2 text-[11px] font-semibold text-white" style={{ left: `${l}%`, width: `${Math.max(2, r - l)}%`, background: color }}>
-                  <span className="absolute inset-y-0 left-0 bg-white/25" style={{ width: `${p.progress}%` }} />
+                  <span className="absolute inset-y-0 left-0 bg-card/25" style={{ width: `${p.progress}%` }} />
                   <span className="relative truncate">{p.progress}%</span>
                 </Link>
                 <div className="absolute top-0 h-full w-0.5 bg-red-500/70" style={{ left: `${todayPos}%` }} />
@@ -77,16 +77,16 @@ function Calendar({ projects, today }) {
     <div className="card p-4">
       <div className="mb-3 flex items-center justify-between">
         <button onClick={() => shift(-1)} className="btn-ghost">←</button>
-        <div className="font-serif text-xl text-navy">{BULAN[first.getUTCMonth()]} {first.getUTCFullYear()}</div>
+        <div className="font-bold text-xl text-heading">{BULAN[first.getUTCMonth()]} {first.getUTCFullYear()}</div>
         <button onClick={() => shift(1)} className="btn-ghost">→</button>
       </div>
-      <div className="grid grid-cols-7 gap-px overflow-hidden rounded-lg border border-hair bg-hair text-xs">
-        {["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"].map((h) => <div key={h} className="bg-navy-soft py-2 text-center font-semibold text-navy">{h}</div>)}
+      <div className="grid grid-cols-7 gap-px overflow-hidden rounded-lg border border-line bg-line text-xs">
+        {["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"].map((h) => <div key={h} className="bg-subtle py-2 text-center font-semibold text-heading">{h}</div>)}
         {cells.map((c) => {
           const inMonth = c.slice(0, 7) === month.slice(0, 7);
           const dayTasks = tasks.filter((t) => t.start_date && t.end_date && t.start_date <= c && t.end_date >= c);
           return (
-            <div key={c} className={`min-h-[96px] bg-white p-1.5 ${inMonth ? "" : "opacity-40"}`}>
+            <div key={c} className={`min-h-[96px] bg-card p-1.5 ${inMonth ? "" : "opacity-40"}`}>
               <div className={`mb-1 text-right text-[11px] font-semibold ${c === today ? "text-white" : "text-muted"}`}>
                 <span className={c === today ? "rounded-full bg-gold px-1.5 py-0.5" : ""}>{parse(c).getUTCDate()}</span>
               </div>
@@ -112,7 +112,7 @@ function List({ projects }) {
         return (
           <Link key={p.id} href={`/rencana/${p.slug}`} className="card p-5 hover:border-gold">
             <div className="flex items-start justify-between gap-3">
-              <div className="font-serif text-lg text-navy">{p.name}</div>
+              <div className="font-bold text-lg text-heading">{p.name}</div>
               <Badge map={STATUS_PROJ} value={p.status} />
             </div>
             <div className="mt-1 text-xs text-muted">{nice(p.start_date)} – {nice(p.end_date)} · {done}/{p.tasks.length} tugas selesai</div>

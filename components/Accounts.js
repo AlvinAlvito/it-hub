@@ -39,7 +39,7 @@ export default function Accounts({ accounts, vault }) {
   if (!accounts.length) return <p className="mt-2 text-sm text-muted">Belum ada akun yang dicatat untuk web ini.</p>;
   return (
     <div className="mt-4">
-      <div className="mb-4 flex flex-wrap items-center gap-3 rounded-lg bg-navy-soft p-3 text-sm">
+      <div className="mb-4 flex flex-wrap items-center gap-3 rounded-lg bg-subtle p-3 text-sm">
         {unlocked ? (
           <>
             <span className="font-semibold text-teal">Brankas terbuka 10 menit. Password tampil 30 detik per klik.</span>
@@ -52,25 +52,25 @@ export default function Accounts({ accounts, vault }) {
             <button disabled={busy || pin.length !== 6} className="btn-primary">Buka</button>
           </form>
         )}
-        {err && <span className="text-red-700">{err}</span>}
+        {err && <span className="text-red-600 dark:text-red-400">{err}</span>}
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-hair text-left text-xs text-muted">
+            <tr className="border-b border-line text-left text-xs text-muted">
               <th className="py-2 pr-4">Peran</th><th className="py-2 pr-4">Username</th><th className="py-2 pr-4">Password</th><th className="py-2 pr-4">Fungsi</th><th className="py-2">Pemegang</th>
             </tr>
           </thead>
           <tbody>
             {accounts.map((a) => (
-              <tr key={a.id} className="border-b border-hair align-top">
-                <td className="py-3 pr-4 font-semibold text-navy">{a.role_name}{a.login_url && <a href={a.login_url} target="_blank" rel="noreferrer" className="block text-xs font-normal text-gold-dark">halaman login ↗</a>}</td>
+              <tr key={a.id} className="border-b border-line align-top">
+                <td className="py-3 pr-4 font-semibold text-heading">{a.role_name}{a.login_url && <a href={a.login_url} target="_blank" rel="noreferrer" className="block text-xs font-normal text-accent">halaman login ↗</a>}</td>
                 <td className="py-3 pr-4">{a.username ? <button onClick={() => copy(a.username)} title="Salin" className="font-mono hover:underline">{a.username}</button> : "-"}</td>
                 <td className="py-3 pr-4">
                   {!a.has_password ? "-" : unlocked ? (
                     <span className="flex items-center gap-2">
                       <span className="font-mono">{shown[a.id] !== undefined ? shown[a.id] : "••••••••"}</span>
-                      <button onClick={() => reveal(a.id)} className="text-xs font-semibold text-gold-dark">{shown[a.id] !== undefined ? "Sembunyikan" : "Lihat"}</button>
+                      <button onClick={() => reveal(a.id)} className="text-xs font-semibold text-accent">{shown[a.id] !== undefined ? "Sembunyikan" : "Lihat"}</button>
                       {shown[a.id] !== undefined && <button onClick={() => copy(shown[a.id])} className="text-xs text-muted">Salin</button>}
                     </span>
                   ) : <span className="font-mono text-muted">•••••••• (terkunci)</span>}

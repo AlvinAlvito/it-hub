@@ -15,11 +15,11 @@ export default function SummaryBox({ view, date }) {
   }
   useEffect(() => { setText(""); setState("idle"); }, [view, date]);
   return (
-    <div className="card border-gold/40 bg-[#FBF8F1] p-5">
+    <div className="card border-gold/40 bg-accent-tint p-5">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <div className="kicker">Ringkasan AI</div>
-          <div className="font-serif text-lg text-navy">Laporan singkat untuk pimpinan</div>
+          <div className="font-bold text-lg text-heading">Laporan singkat untuk pimpinan</div>
         </div>
         <button onClick={() => load(false)} disabled={state === "loading"} className="btn-gold">{state === "loading" ? "Menyusun..." : text ? "Muat ulang" : "Buat ringkasan"}</button>
       </div>

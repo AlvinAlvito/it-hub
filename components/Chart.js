@@ -1,4 +1,4 @@
-// Grafik SVG sederhana: batang atau garis
+// Grafik SVG sederhana: batang atau garis. Warna mengikuti tema lewat kelas fill/stroke.
 export default function Chart({ type = "bar", title, labels = [], values = [], height = 220 }) {
   const n = Math.min(labels.length, values.length);
   if (!n) return null;
@@ -11,32 +11,32 @@ export default function Chart({ type = "bar", title, labels = [], values = [], h
   const ticks = [0, 0.5, 1].map((f) => Math.round(max * f));
   return (
     <figure className="w-full overflow-x-auto">
-      {title && <figcaption className="mb-2 text-sm font-semibold text-navy">{title}</figcaption>}
+      {title && <figcaption className="mb-2 text-sm font-semibold text-heading">{title}</figcaption>}
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full min-w-[320px]" role="img" aria-label={title || "grafik"}>
         {ticks.map((t, i) => (
           <g key={i}>
-            <line x1={pad.l} x2={W - pad.r} y1={y(t)} y2={y(t)} stroke="#E3E7ED" />
-            <text x={pad.l - 6} y={y(t) + 4} fontSize="10" textAnchor="end" fill="#5B6778">{t}</text>
+            <line x1={pad.l} x2={W - pad.r} y1={y(t)} y2={y(t)} className="stroke-line" strokeDasharray={i ? "3 4" : ""} />
+            <text x={pad.l - 6} y={y(t) + 4} fontSize="10" textAnchor="end" className="fill-muted">{t}</text>
           </g>
         ))}
         {type === "line" ? (
           <>
-            <polyline fill="none" stroke="#0F2A4A" strokeWidth="2.5" points={vals.map((v, i) => `${pad.l + step * (i + 0.5)},${y(v)}`).join(" ")} />
-            {vals.map((v, i) => <circle key={i} cx={pad.l + step * (i + 0.5)} cy={y(v)} r="3.5" fill="#B08D57" />)}
+            <polyline fill="none" className="stroke-slatex" strokeWidth="2.5" points={vals.map((v, i) => `${pad.l + step * (i + 0.5)},${y(v)}`).join(" ")} />
+            {vals.map((v, i) => <circle key={i} cx={pad.l + step * (i + 0.5)} cy={y(v)} r="3.5" className="fill-gold" />)}
           </>
         ) : (
           vals.map((v, i) => {
-            const bw = Math.min(36, step * 0.6);
+            const bw = Math.min(34, step * 0.58);
             return (
               <g key={i}>
-                <rect x={pad.l + step * (i + 0.5) - bw / 2} y={y(v)} width={bw} height={Math.max(0, pad.t + ih - y(v))} rx="4" fill={i === n - 1 ? "#B08D57" : "#0F2A4A"} />
-                {v > 0 && <text x={pad.l + step * (i + 0.5)} y={y(v) - 5} fontSize="10" textAnchor="middle" fill="#1F2937">{v}</text>}
+                <rect x={pad.l + step * (i + 0.5) - bw / 2} y={y(v)} width={bw} height={Math.max(0, pad.t + ih - y(v))} rx="6" className={i === n - 1 ? "fill-gold" : "fill-slatex"} />
+                {v > 0 && <text x={pad.l + step * (i + 0.5)} y={y(v) - 6} fontSize="10" fontWeight="600" textAnchor="middle" className="fill-fg">{v}</text>}
               </g>
             );
           })
         )}
         {labels.slice(0, n).map((l, i) => (
-          <text key={i} x={pad.l + step * (i + 0.5)} y={H - pad.b + 16} fontSize="10" textAnchor="middle" fill="#5B6778">{String(l).slice(0, 12)}</text>
+          <text key={i} x={pad.l + step * (i + 0.5)} y={H - pad.b + 16} fontSize="10" textAnchor="middle" className="fill-muted">{String(l).slice(0, 12)}</text>
         ))}
       </svg>
     </figure>

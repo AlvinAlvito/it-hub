@@ -33,14 +33,14 @@ export default async function Aktivitas({ searchParams }) {
         <p className="mt-2 max-w-3xl text-muted">Perubahan kode diambil otomatis dari GitHub; koordinasi, rapat, dan strategi dicatat manual. Sinkron terakhir: {lastSync ? lastSync.replace("T", " ").slice(0, 16) + " UTC" : "belum pernah"}.</p>
       </div>
       <div className="wrap flex flex-wrap items-center gap-3">
-        <div className="inline-flex rounded-xl border border-hair bg-white p-1">
-          {VIEWS.map(([v, l]) => <Link key={v} href={link(v, date)} className={`rounded-lg px-4 py-2 text-sm font-semibold ${view === v ? "bg-navy text-white" : "text-muted hover:text-navy"}`}>{l}</Link>)}
+        <div className="inline-flex rounded-xl border border-line bg-card p-1">
+          {VIEWS.map(([v, l]) => <Link key={v} href={link(v, date)} className={`rounded-lg px-4 py-2 text-sm font-semibold ${view === v ? "bg-brand text-white" : "text-muted hover:text-heading"}`}>{l}</Link>)}
         </div>
         <div className="flex items-center gap-2">
           <Link href={link(view, shiftFor(view, date, -1))} className="btn-ghost">←</Link>
-          <div className="min-w-[200px] text-center font-serif text-lg text-navy">{labelRange(view, a, b)}</div>
+          <div className="min-w-[200px] text-center font-bold text-lg text-heading">{labelRange(view, a, b)}</div>
           <Link href={link(view, shiftFor(view, date, 1))} className="btn-ghost">→</Link>
-          <Link href={link(view, todayWIB())} className="text-sm font-semibold text-gold-dark">Hari ini</Link>
+          <Link href={link(view, todayWIB())} className="text-sm font-semibold text-accent">Hari ini</Link>
         </div>
       </div>
 
@@ -63,21 +63,21 @@ export default async function Aktivitas({ searchParams }) {
       <div className="wrap mt-6 space-y-4">
         {groups.length ? groups.map((g) => (
           <div key={g.d} className="card p-5">
-            <div className="font-serif text-lg text-navy">{niceLong(g.d)}</div>
-            <div className="mt-2 divide-y divide-hair">
+            <div className="font-bold text-lg text-heading">{niceLong(g.d)}</div>
+            <div className="mt-2 divide-y divide-line">
               {g.as.map((x) => (
                 <div key={"a" + x.id} className="flex flex-wrap gap-x-3 py-2 text-sm">
                   <span className="chip bg-teal/10 capitalize text-teal">{x.category}</span>
                   <span className="font-semibold">{x.title}</span>
                   {x.duration_min ? <span className="text-xs text-muted">{x.duration_min} menit</span> : null}
-                  {x.project_name && <span className="text-xs text-gold-dark">{x.project_name}</span>}
+                  {x.project_name && <span className="text-xs text-accent">{x.project_name}</span>}
                   {x.detail && <p className="w-full text-muted">{x.detail}</p>}
                 </div>
               ))}
               {g.cs.map((c) => (
                 <div key={c.sha} className="flex gap-3 py-2 text-sm">
                   <span className="w-12 shrink-0 text-xs text-muted">{c.committed_at.slice(11, 16)}</span>
-                  <span className="w-32 shrink-0 truncate text-xs font-semibold text-navy">{map[c.repo] || c.repo}</span>
+                  <span className="w-32 shrink-0 truncate text-xs font-semibold text-heading">{map[c.repo] || c.repo}</span>
                   <a href={c.url} target="_blank" rel="noreferrer" className="hover:underline">{c.message.split("\n")[0]}</a>
                 </div>
               ))}

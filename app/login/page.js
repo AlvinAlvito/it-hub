@@ -27,7 +27,7 @@ export default function Login() {
         <input className="input" autoComplete="username" value={f.username} onChange={(e) => setF({ ...f, username: e.target.value })} />
         <label className="label mt-4">Password</label>
         <input className="input" type="password" autoComplete="current-password" value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} />
-        {err && <p className="mt-3 text-sm text-red-700">{err}</p>}
+        {err && <p className="mt-3 text-sm text-red-600 dark:text-red-400">{err}</p>}
         <button disabled={busy} className="btn-primary mt-6 w-full">{busy ? "Memeriksa..." : "Masuk"}</button>
       </form>
     </div>

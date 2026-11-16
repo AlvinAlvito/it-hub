@@ -19,7 +19,7 @@ export default function CredentialForm({ userId, self, label }) {
   }
   return (
     <form onSubmit={submit} className="card space-y-3 p-6">
-      {label && <div className="font-semibold text-navy">{label}</div>}
+      {label && <div className="font-semibold text-heading">{label}</div>}
       {self && (<><label className="label">Password saat ini</label><input type="password" className="input" value={f.current_password} onChange={(e) => setF({ ...f, current_password: e.target.value })} required /></>)}
       <label className="label">Password baru (minimal 10 karakter, kosongkan bila tidak diganti)</label>
       <input type="password" className="input" autoComplete="new-password" value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} />
