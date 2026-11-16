@@ -1,4 +1,4 @@
-node_modules/
+﻿node_modules/
 .next/
 out/
 uploads/
@@ -6,4 +6,4 @@ uploads/
 .env.local
 .env.production
 *.log
-deploy/*.tar.gz
+deploy/
